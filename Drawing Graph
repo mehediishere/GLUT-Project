@@ -1,0 +1,106 @@
+//File name -->> main.cpp
+
+#include <windows.h>
+#include <GL/glut.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+float Color1=0, Color2=1.0, Color3=1.0;
+int r,p,q;
+
+
+void keyboard(unsigned char key, int x, int y)
+{
+  switch (key)
+  {
+  case 27:             // ESCAPE key
+	  exit (0);
+	  break;
+
+  case 'r':
+	 Color1=1.0, Color2=0.0, Color3=0.0;
+	 break;
+  case 'g':
+	 Color1=0.0, Color2=1.0, Color3=0.0;
+     break;
+  case 'b':
+      Color1=0.0, Color2=0.0, Color3=1.0;
+	  break;
+  }
+  glutPostRedisplay();
+
+}
+
+void Init(int w, int h)
+{
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glViewport(0,0, (GLsizei)w,(GLsizei)h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    //gluOrtho2D( (GLdouble)w/-2,(GLdouble)w/2, (GLdouble)h/-2, (GLdouble)h/2); //Screen Size
+    gluOrtho2D( 0,640, 0, 480); //Screen Size (Alternative Way)
+
+}
+
+static void display(void)
+{
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    int i=0,j=0,k=0,l=0;
+
+    glPointSize(1);
+    glColor3f(Color1,Color2, Color3);
+
+    glBegin(GL_POINTS);
+     while(j<=480){
+        for( i=0;i<=640;i++)
+        glVertex2f(i,j);
+        j+=20;
+     }
+    glEnd();
+
+    glBegin(GL_POINTS);
+     while(k<=640){
+        for( l=0;l<=480;l++)
+        glVertex2f(k,l);
+        k+=20;
+     }
+    glEnd();
+
+    /*glBegin(GL_POINTS);
+    for( i=0;i<=640;i++)
+     glVertex2f(i,0);
+    for( i=0;i<=480;i++)
+        glVertex2f(0,i);
+    glEnd();*/
+
+    glBegin(GL_TRIANGLE_STRIP);
+    glVertex2f(250,50);
+    glVertex2f(200,200);
+    glVertex2f(150,50);
+    glEnd();
+
+
+
+    glFlush();
+}
+
+int main(int argc, char *argv[])
+{
+
+    glutInit(&argc, argv);
+    glutInitWindowSize(640,480);
+    glutInitWindowPosition(200,200);
+    glutInitDisplayMode(GLUT_RGB);
+
+    glutCreateWindow("Polygon drawing");
+
+    Init(640, 480);
+    glutKeyboardFunc(keyboard);
+    glutDisplayFunc(display);
+
+
+    glutMainLoop();
+
+    return 0;
+}
