@@ -1,0 +1,96 @@
+#include <windows.h>
+#include <GL/glut.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+float Color1=0, Color2=1, Color3=0;
+int r,p,q;
+
+
+void keyboard(unsigned char key, int x, int y)
+{
+  switch (key)
+  {
+  case 27:             // ESCAPE key
+	  exit (0);
+	  break;
+
+  case 'r':
+	 Color1=1.0, Color2=0.0, Color3=0.0;
+	 break;
+  case 'g':
+	 Color1=0.0, Color2=1.0, Color3=0.0;
+     break;
+  case 'b':
+      Color1=0.0, Color2=0.0, Color3=1.0;
+	  break;
+  }
+  glutPostRedisplay();
+
+}
+
+void Init(int w, int h)
+{
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glViewport(0,0, (GLsizei)w,(GLsizei)h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D( (GLdouble)w/-2,(GLdouble)w/2, (GLdouble)h/-2, (GLdouble)h/2);
+
+}
+
+static void display(void)
+{
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    int i=0;
+
+    glPointSize(1);
+    glLineWidth(2);
+    glColor3f(Color1,Color2, Color3);
+
+    glBegin(GL_LINES);
+        glVertex2f(0, -340);
+        glVertex2f(0, 340);
+        glVertex2f(-660, 0);
+        glVertex2f(660, 0);
+    glEnd();
+
+    int j=-340,k=-660,l=0;
+
+    glBegin(GL_POINTS);
+     while(j<=340){
+        for( i=-660;i<=660;i++)
+        glVertex2f(i,j);
+        j+=20;
+     }
+     while(k<=660){
+        for( l=-340;l<=340;l++)
+        glVertex2f(k,l);
+        k+=20;
+     }
+    glEnd();
+
+    glFlush();
+}
+
+
+int main(int argc, char *argv[])
+{
+
+    glutInit(&argc, argv);
+    glutInitWindowSize(1320,680);
+    glutInitWindowPosition(20,80);
+    glutInitDisplayMode(GLUT_RGB);
+
+    glutCreateWindow("Polygon drawing");
+
+    Init(1320, 680);
+    glutKeyboardFunc(keyboard);
+    glutDisplayFunc(display);
+
+
+    glutMainLoop();
+
+    return 0;
+}
