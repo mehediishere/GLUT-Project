@@ -1,0 +1,69 @@
+#include <windows.h>
+#include <GL/glut.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include<iostream>
+using namespace std;
+
+int c=0,x,y;
+int i=71;
+
+void Init()
+{
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glMatrixMode(GL_PROJECTION);
+    gluOrtho2D(0, 400, 0,400);
+
+}
+
+void chessboard(int x1,int y1,int x2,int y2,int x3,int y3,int x4,int y4)
+{
+    cout<<x1<<" "<<y1<<" "<<x2<<" "<<y2<<" "<<x3<<" "<<y3<<" "<<x4<<" "<<y4<<"\n";
+
+    glBegin(GL_POLYGON);
+        if(c==0){
+        glColor3f(0.902, 0.902, 0.980);
+        c = 1;
+        }
+        else{
+            glColor3f(0.125, 0.698, 0.667);
+            c=0;
+        }
+        glVertex2i(x1, y1);
+        glVertex2i(x2, y2);
+        glVertex2i(x3, y3);
+        glVertex2i(x4, y4);
+    glEnd();
+}
+
+void display()
+{
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    for(x = 0; x <= 400; x += 50){
+        for(y = 0; y <= 400; y += 50){
+            chessboard(x, y + 50, x + 50, y + 50, x + 50, y, x, y);
+        }
+    }
+
+    glFlush();
+}
+
+
+int main(int argc, char *argv[])
+{
+
+    glutInit(&argc, argv);
+    glutInitWindowSize(400,400);
+    glutInitWindowPosition(400,200);
+    glutInitDisplayMode(GLUT_RGB);
+
+    glutCreateWindow("Polygon drawing");
+    glutDisplayFunc(display);
+    Init();
+
+    glutMainLoop();
+
+    return 0;
+}
