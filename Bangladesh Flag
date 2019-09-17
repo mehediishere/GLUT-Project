@@ -1,0 +1,85 @@
+#include <windows.h>
+#include <GL/glut.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include<math.h>
+#include<iostream>
+using namespace std;
+
+
+float x,y,r=100;
+
+void Init()
+{
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glMatrixMode(GL_PROJECTION);
+    gluOrtho2D(-400, 400, -400,400);
+
+}
+
+
+
+void display()
+{
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+    glBegin(GL_QUADS);
+    glColor3d(0,1,0);
+        glVertex2f(200,-200);
+        glVertex2f(200,200);
+        glVertex2f(-200,200);
+        glVertex2f(-200,-200);
+    glEnd();
+    glBegin(GL_TRIANGLE_FAN);
+        glColor3d(1,0,0);
+        for(float i=0; i<=360; i++)
+        {
+                x = r*cos((i*3.14159)/180);
+                y = r*sin((i*3.14159)/180);
+                glVertex2f(x,y);
+        }
+        glEnd();
+        glBegin(GL_QUADS);
+    glColor3d(0,0,1);
+        glVertex2f(-200,-350);
+        glVertex2f(-200,200);
+        glVertex2f(-220,200);
+        glVertex2f(-220,-350);
+    glEnd();
+    glBegin(GL_QUADS);
+    glColor3d(0,1,1);
+        glVertex2f(-180,-360);
+        glVertex2f(-180,-350);
+        glVertex2f(-240,-350);
+        glVertex2f(-240,-360);
+    glEnd();
+    glBegin(GL_QUADS);
+    glColor3d(1,0,1);
+        glVertex2f(-160,-380);
+        glVertex2f(-160,-360);
+        glVertex2f(-260,-360);
+        glVertex2f(-260,-380);
+    glEnd();
+
+    glFlush();
+}
+
+
+int main(int argc, char *argv[])
+{
+
+    glutInit(&argc, argv);
+    glutInitWindowSize(400,400);
+    glutInitWindowPosition(400,200);
+    glutInitDisplayMode(GLUT_RGB);
+
+    glutCreateWindow("Polygon drawing");
+    glutDisplayFunc(display);
+    Init();
+
+    glutMainLoop();
+
+    return 0;
+}
